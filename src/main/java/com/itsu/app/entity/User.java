@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * Created by Su Ben on 2019/6/17
+ * @author: 苏犇
+ * @date: 2019/6/19 1:33
  */
 @TableName("tb_user")
 @Data

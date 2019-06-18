@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body>
+<div align="center" style="text-align: center">
+    <form id="form">
+        <div>
+            <label for="userName">用戶名</label>
+            <input type="text" id="userName" name="userName">
+        </div>
+        <div>
+            <label for="password">密码</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div>
+            <input type="submit" value="提交">
+            <input type="reset" value="重置">
+        </div>
+    </form>
+</div>
+</body>
+<script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#form").submit(function () {
+            var userName = $("#userName").val();
+            var password = $("#password").val();
+            var formData = {userName: userName, password: password};
+            submitData(formData);
+            return false;
+        })
+
+        function submitData(formData) {
+            $.ajax({
+                url: "/login.do",
+                type:"post",
+                dataType:"json",
+                data: formData,
+                success: function (data) {
+                    if (data.code == '200') {
+                        alert("success " + data.msg);
+                    } else {
+                        alert("error: " + data.msg);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.responseText);
+                    console.log(textStatus);
+                }
+            })
+        }
+    })
+</script>
+</html>
