@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--定义日志保存的路径-->
+    <!--1.更改默认的logback.xml为logback-spring.xml
+        SpringBoot当看到logback-spring.xml文件存在的时候，才会启动日志的环境切换
+        logback.xml文件没法做到
+        2. 在需要切换的环境上增加springProfile标签
+    -->
+    <!--    <springProfile name="dev">-->
+    <!--        <property name="LOG_HOME" value="D:\\workspaces\\IDEA\\springbootmybatis\\logs\\"/>-->
+    <!--    </springProfile>-->
+    <!--    <springProfile name="prd">-->
+    <!--        <property name="LOG_HOME" value="/usr/local/apps/springmybatis/logs/"/>-->
+    <!--    </springProfile>-->
+
+    <property name="LOG_HOME" value="D:\\workspaces\\IDEA\\shiro\\logs\\"></property>
+    <!--定义一个控制台输出器，名为console-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--按pattern指定的格式输出日志，编码为UTF-8-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%thread] %logger{30} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--日志文件配置info-->
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--如果只是想要 Info 级别的日志，只是过滤 info 还是会输出 Error 日志，因为 Error 的级别高，
+        所以我们使用下面的策略，可以避免输出 Error 的日志-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--过滤 Error-->
+            <level>ERROR</level>
+            <!--匹配到就禁止-->
+            <onMatch>DENY</onMatch>
+            <!--没有匹配到就允许-->
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
+            <FileNamePattern>${LOG_HOME}/info.%d.log</FileNamePattern>
+        </rollingPolicy>
+
+        <!--日志输出编码格式化-->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%thread] %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--日志文件配置error-->
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!--设置日志级别,过滤掉info日志,只输入error日志-->
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>
+                %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${LOG_HOME}/error.%d.log</fileNamePattern>
+        </rollingPolicy>
+
+
+        <!--日志输出编码格式化-->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--定义mapper包下的日志级别为debug 打印sql-->
+    <logger name="com.itsu.app.mapper" level="DEBUG"></logger>
+
+    <!-- 定义日志全局最低输出级别是INFO，同时向控制台和日滚动文件输出 -->
+    <root level="debug">
+        <appender-ref ref="console"/>
+        <appender-ref ref="fileInfoLog"/>
+        <appender-ref ref="fileErrorLog"/>
+    </root>
+</configuration>
