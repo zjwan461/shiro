@@ -11,22 +11,55 @@
             <value>
                 /login.do = anon
                 /login = anon
-                /* = authc
+                / = user
+                /** = authc
             </value>
         </property>
     </bean>
 
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="realm" ref="myRealm"></property>
+        <property name="realm" ref="myRealm"/>
+        <property name="cacheManager" ref="redisCacheManager"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
 
+    <bean id="redisCacheManager" class="com.itsu.app.shrio.cache.RedisCacheManager"/>
+
+    <!--session manager-->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="globalSessionTimeout" value="300000"/>
+        <property name="deleteInvalidSessions" value="true"/>
+        <property name="sessionDAO" ref="sessionDao"/>
+    </bean>
+
+    <!--redis 管理Session（shiro.session）-->
+    <bean id="sessionDao" class="com.itsu.app.session.RedisSessionDao"/>
+
+    <!--自定义realm实现-->
     <bean id="myRealm" class="com.itsu.app.shrio.realm.MyRealm">
         <property name="credentialsMatcher" ref="credentialsMatcher"></property>
         <property name="name" value="MyRealm"></property>
+        <property name="authenticationCachingEnabled" value="true"/>
+
     </bean>
 
+    <!--配置密码MD5加密-->
     <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" id="credentialsMatcher">
         <property name="hashAlgorithmName" value="MD5"/>
         <property name="hashIterations" value="1"/>
     </bean>
+
+    <!--记住我配置-->
+    <bean class="org.apache.shiro.web.mgt.CookieRememberMeManager" id="rememberMeManager">
+        <property name="cookie" ref="simpleCookie"/>
+    </bean>
+
+    <bean class="org.apache.shiro.web.servlet.SimpleCookie" id="simpleCookie">
+        <!--cookie存活时间-->
+        <property name="maxAge" value="2000000"/>
+        <!--cookie name-->
+        <property name="name" value="rememberMe"/>
+    </bean>
+
 </beans>

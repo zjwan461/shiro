@@ -3,13 +3,13 @@ package com.itsu.app.shrio.realm;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itsu.app.entity.User;
 import com.itsu.app.mapper.UserMapper;
+import com.itsu.app.utils.ByteSourceUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
 
@@ -21,7 +21,7 @@ public class MyRealm extends AuthorizingRealm {
     @Resource
     private UserMapper userMapper;
 
-    //    授權
+    // 授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String userName = (String) principals.getPrimaryPrincipal();
@@ -30,7 +30,7 @@ public class MyRealm extends AuthorizingRealm {
         return authorizationInfo;
     }
 
-    //    認證
+    //    认证
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
@@ -38,6 +38,8 @@ public class MyRealm extends AuthorizingRealm {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name", userName);
         User user = userMapper.selectOne(queryWrapper);
+//        从数据库中获取授权数据
+        System.out.println("从数据库中获取授权数据");
         if (user == null) {
             return null;
         }
@@ -47,7 +49,7 @@ public class MyRealm extends AuthorizingRealm {
             return null;
         }
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(userName, user.getPassword(), getName());
-        authenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(userName));
+        authenticationInfo.setCredentialsSalt(ByteSourceUtil.bytes(userName));
         return authenticationInfo;
     }
 

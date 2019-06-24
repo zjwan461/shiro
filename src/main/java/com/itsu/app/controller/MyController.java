@@ -36,6 +36,8 @@ public class MyController {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword());
         try {
+            if (user.isRememberMe())
+                token.setRememberMe(true);
             subject.login(token);
             map.put("code", "200");
             map.put("msg", "登录成功");

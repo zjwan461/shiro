@@ -23,6 +23,7 @@
     </mvc:annotation-driven>
     <mvc:default-servlet-handler></mvc:default-servlet-handler>
 
+    <mvc:resources mapping="/**" location="/static"/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="contentType" value="text/html;charset-utf-8"></property>
