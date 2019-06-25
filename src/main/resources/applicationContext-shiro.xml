@@ -24,7 +24,14 @@
         <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
 
-    <bean id="redisCacheManager" class="com.itsu.app.shrio.cache.RedisCacheManager"/>
+    <bean id="redisCacheManager" class="com.itsu.app.shrio.cache.RedisCacheManager">
+        <property name="cacheNames">
+            <list>
+                <value>authenCache</value>
+                <value>authorCache</value>
+            </list>
+        </property>
+    </bean>
 
     <!--session manager-->
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
@@ -41,7 +48,9 @@
         <property name="credentialsMatcher" ref="credentialsMatcher"></property>
         <property name="name" value="MyRealm"></property>
         <property name="authenticationCachingEnabled" value="true"/>
-
+        <property name="authenticationCacheName" value="authenCache"/>
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="authorCache"/>
     </bean>
 
     <!--配置密码MD5加密-->

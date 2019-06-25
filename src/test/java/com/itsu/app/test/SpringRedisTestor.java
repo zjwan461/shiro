@@ -1,6 +1,8 @@
 package com.itsu.app.test;
 
 import com.itsu.app.utils.JedisUtil;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SimpleSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,6 +28,13 @@ public class SpringRedisTestor {
 
     @Test
     public void testGet() {
-
+        Session session = new SimpleSession();
+        session.setAttribute("suben", "admin");
+        session.setTimeout(10000L);
+//        jedisUtil.set("session",session);
+//        Object obj = jedisUtil.get("session");
+//        System.out.println(JSON.toJSONString(obj));
     }
+
+
 }

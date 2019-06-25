@@ -12,6 +12,8 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Su Ben on 2019/6/17
@@ -26,20 +28,24 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String userName = (String) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-//        authorizationInfo.setRoles();
+        Set<String> roles = getRolesByUsername(userName);
+        authorizationInfo.setRoles(roles);
         return authorizationInfo;
+    }
+
+    private Set<String> getRolesByUsername(String userName) {
+        Set<String> roles = new HashSet<>();
+        roles.add("admin");
+        roles.add("user");
+        return roles;
+
     }
 
     //    认证
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
-        String userName = usernamePasswordToken.getUsername();
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name", userName);
-        User user = userMapper.selectOne(queryWrapper);
-//        从数据库中获取授权数据
-        System.out.println("从数据库中获取授权数据");
+        String userName = (String) token.getPrincipal();
+        User user = getUserByUserName(userName);
         if (user == null) {
             return null;
         }
@@ -51,6 +57,14 @@ public class MyRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(userName, user.getPassword(), getName());
         authenticationInfo.setCredentialsSalt(ByteSourceUtil.bytes(userName));
         return authenticationInfo;
+    }
+
+    public User getUserByUserName(String userName) {
+        System.out.println("从数据库中获取数据");
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_name", userName);
+        User user = userMapper.selectOne(queryWrapper);
+        return user;
     }
 
     public static void main(String[] args) {

@@ -29,7 +29,9 @@
         $("#form").submit(function () {
             var userName = $("#userName").val();
             var password = $("#password").val();
-            var rememberMe = $("#rememberMe").val();
+            var rememberMe = $("#rememberMe").is(":checked");
+            // alert(rememberMe);
+            // return false;
             var formData = {userName: userName, password: password, rememberMe: rememberMe};
             submitData(formData);
             return false;

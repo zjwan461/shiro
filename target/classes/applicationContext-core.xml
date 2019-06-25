@@ -9,9 +9,4 @@
 
     <context:component-scan base-package="com.itsu.app"/>
     <!--    <util:properties id="dbConfig" location="classpath:dbConfig.properties"></util:properties>-->
-
-    <!--开启aop代理-->
-    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
-
-
 </beans>

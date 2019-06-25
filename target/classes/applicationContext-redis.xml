@@ -39,5 +39,8 @@
     <!--jdk默认序列化-->
     <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"
           id="jdkSerializationRedisSerializer"/>
-    <!--    <bean id="jedisUtil" class="com.itsu.app.utils.JedisUtil"/>-->
+
+<!--    <bean class="com.itsu.app.utils.FastJsonRedisSerializer" id="fastJsonRedisSerializer"/>-->
+<!--    <bean class="com.itsu.app.utils.GenericJackson2JsonRedisSerializerEx" id="genericJackson2JsonRedisSerializerEx"/>-->
+    <bean id="jedisUtil" class="com.itsu.app.utils.JedisUtil"/>
 </beans>

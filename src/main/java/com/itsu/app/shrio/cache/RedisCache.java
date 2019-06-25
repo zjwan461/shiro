@@ -8,7 +8,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
-import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Set;
 
@@ -19,15 +18,24 @@ import java.util.Set;
 @Component
 public class RedisCache<K, V> implements Cache<K, V> {
 
-    @Resource
     private JedisUtil jedisUtil;
 
     private RedisSerializer serializer = new JdkSerializationRedisSerializer();
 
-    private final String cache_prefix = "shiro:cache";
+    private final String cache_prefix = "cache";
+
+    private String cacheName;
+
+    public RedisCache() {
+    }
+
+    public RedisCache(String name, JedisUtil jedisUtil) {
+        this.cacheName = name;
+        this.jedisUtil = jedisUtil;
+    }
 
     private String getKey(K key) {
-        return cache_prefix + ":" + key;
+        return cache_prefix + ":" + key + ":" + this.cacheName;
     }
 
 
