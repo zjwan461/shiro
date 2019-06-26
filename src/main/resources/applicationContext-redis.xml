@@ -21,12 +21,18 @@
         <property name="testOnCreate" value="false"/>
     </bean>
 
-    <bean class="org.springframework.data.redis.core.RedisTemplate">
+    <!--key采用Strng字符串，value采用二进制存储。 方便存储shiro 中的session & authen(认证) & author(授权)对象-->
+    <bean class="org.springframework.data.redis.core.RedisTemplate" id="redisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
         <property name="keySerializer" ref="stringRedisSerializer"/>
         <property name="valueSerializer" ref="jdkSerializationRedisSerializer"/>
         <property name="hashKeySerializer" ref="stringRedisSerializer"/>
         <property name="hashValueSerializer" ref="jdkSerializationRedisSerializer"/>
+    </bean>
+
+    <!--默认采用String 字符串存储基本的对象信息-->
+    <bean class="org.springframework.data.redis.core.StringRedisTemplate" id="stringRedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
     </bean>
 
     <!--序列化原文保存-->
@@ -36,11 +42,11 @@
     <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"
           id="genericJackson2JsonRedisSerializer"/>
 
-    <!--jdk默认序列化-->
+    <!--jdk默认序列化，实体类默认需要实现序列化接口-->
     <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"
           id="jdkSerializationRedisSerializer"/>
 
-<!--    <bean class="com.itsu.app.utils.FastJsonRedisSerializer" id="fastJsonRedisSerializer"/>-->
-<!--    <bean class="com.itsu.app.utils.GenericJackson2JsonRedisSerializerEx" id="genericJackson2JsonRedisSerializerEx"/>-->
+    <!--    <bean class="com.itsu.app.utils.FastJsonRedisSerializer" id="fastJsonRedisSerializer"/>-->
+    <!--    <bean class="com.itsu.app.utils.GenericJackson2JsonRedisSerializerEx" id="genericJackson2JsonRedisSerializerEx"/>-->
     <bean id="jedisUtil" class="com.itsu.app.utils.JedisUtil"/>
 </beans>

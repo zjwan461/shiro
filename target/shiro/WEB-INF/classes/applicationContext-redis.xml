@@ -21,12 +21,16 @@
         <property name="testOnCreate" value="false"/>
     </bean>
 
-    <bean class="org.springframework.data.redis.core.RedisTemplate">
+    <bean class="org.springframework.data.redis.core.RedisTemplate" id="redisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
         <property name="keySerializer" ref="stringRedisSerializer"/>
         <property name="valueSerializer" ref="jdkSerializationRedisSerializer"/>
         <property name="hashKeySerializer" ref="stringRedisSerializer"/>
         <property name="hashValueSerializer" ref="jdkSerializationRedisSerializer"/>
+    </bean>
+
+    <bean class="org.springframework.data.redis.core.StringRedisTemplate" id="stringRedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
     </bean>
 
     <!--序列化原文保存-->
@@ -40,7 +44,7 @@
     <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"
           id="jdkSerializationRedisSerializer"/>
 
-<!--    <bean class="com.itsu.app.utils.FastJsonRedisSerializer" id="fastJsonRedisSerializer"/>-->
-<!--    <bean class="com.itsu.app.utils.GenericJackson2JsonRedisSerializerEx" id="genericJackson2JsonRedisSerializerEx"/>-->
+    <!--    <bean class="com.itsu.app.utils.FastJsonRedisSerializer" id="fastJsonRedisSerializer"/>-->
+    <!--    <bean class="com.itsu.app.utils.GenericJackson2JsonRedisSerializerEx" id="genericJackson2JsonRedisSerializerEx"/>-->
     <bean id="jedisUtil" class="com.itsu.app.utils.JedisUtil"/>
 </beans>

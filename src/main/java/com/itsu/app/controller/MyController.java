@@ -2,7 +2,6 @@ package com.itsu.app.controller;
 
 import com.itsu.app.entity.User;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -36,21 +35,16 @@ public class MyController {
         Map map = new HashMap();
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword());
-        try {
-            if (user.isRememberMe())
-                token.setRememberMe(true);
-            subject.login(token);
-            map.put("code", "200");
-            map.put("msg", "登录成功");
-        } catch (AuthenticationException e) {
-            map.put("code", "500");
-            map.put("msg", e.getMessage());
-        }
+        if (user.isRememberMe())
+            token.setRememberMe(true);
+        subject.login(token);
 
 //        if (subject.hasRole("admin")) {
 //            System.out.println("有admin权限");
 //        }
 
+        map.put("code", "200");
+        map.put("msg", "登录成功");
         return map;
     }
 
