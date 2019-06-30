@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" id="jedisConnectionFactory"
-          p:usePool="true" p:poolConfig-ref="poolConfig" p:hostName="192.168.152.129" p:port="6379" p:password="123456"
+          p:usePool="true" p:poolConfig-ref="poolConfig" p:hostName="182.61.43.241" p:port="6379" p:password="123456"
           p:database="0">
         <!--<property name="usePool" value="true"/>
         <property name="hostName" value="192.168.152.129"/>-->
@@ -21,6 +21,7 @@
         <property name="testOnCreate" value="false"/>
     </bean>
 
+    <!--key采用Strng字符串，value采用二进制存储。 方便存储shiro 中的session & authen(认证) & author(授权)对象-->
     <bean class="org.springframework.data.redis.core.RedisTemplate" id="redisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
         <property name="keySerializer" ref="stringRedisSerializer"/>
@@ -29,6 +30,7 @@
         <property name="hashValueSerializer" ref="jdkSerializationRedisSerializer"/>
     </bean>
 
+    <!--默认采用String 字符串存储基本的对象信息-->
     <bean class="org.springframework.data.redis.core.StringRedisTemplate" id="stringRedisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
     </bean>
@@ -40,7 +42,7 @@
     <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"
           id="genericJackson2JsonRedisSerializer"/>
 
-    <!--jdk默认序列化-->
+    <!--jdk默认序列化，实体类默认需要实现序列化接口-->
     <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"
           id="jdkSerializationRedisSerializer"/>
 

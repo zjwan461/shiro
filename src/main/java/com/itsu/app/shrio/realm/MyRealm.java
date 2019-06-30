@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itsu.app.entity.User;
 import com.itsu.app.mapper.UserMapper;
 import com.itsu.app.utils.ByteSourceUtil;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
@@ -33,6 +35,7 @@ public class MyRealm extends AuthorizingRealm {
         return authorizationInfo;
     }
 
+    /*模拟获取角色，实际情况应该从数据库获取*/
     private Set<String> getRolesByUsername(String userName) {
         Set<String> roles = new HashSet<>();
         roles.add("admin");
@@ -55,6 +58,7 @@ public class MyRealm extends AuthorizingRealm {
             return null;
         }
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(userName, user.getPassword(), getName());
+        /*设置密码加盐*/
         authenticationInfo.setCredentialsSalt(ByteSourceUtil.bytes(userName));
         return authenticationInfo;
     }
@@ -67,8 +71,5 @@ public class MyRealm extends AuthorizingRealm {
         return user;
     }
 
-    public static void main(String[] args) {
-        Md5Hash md5Hash = new Md5Hash("suben", "suben");
-        System.out.println(md5Hash.toString());
-    }
+
 }

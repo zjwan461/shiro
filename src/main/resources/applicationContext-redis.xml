@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" id="jedisConnectionFactory"
-          p:usePool="true" p:poolConfig-ref="poolConfig" p:hostName="192.168.152.129" p:port="6379" p:password="123456"
+          p:usePool="true" p:poolConfig-ref="poolConfig" p:hostName="xxx.xx.xx.xxx" p:port="6379" p:password="123456"
           p:database="0">
         <!--<property name="usePool" value="true"/>
         <property name="hostName" value="192.168.152.129"/>-->

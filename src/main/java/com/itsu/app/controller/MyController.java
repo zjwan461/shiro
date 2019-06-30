@@ -39,9 +39,9 @@ public class MyController {
             token.setRememberMe(true);
         subject.login(token);
 
-//        if (subject.hasRole("admin")) {
-//            System.out.println("有admin权限");
-//        }
+        if (subject.hasRole("admin")) {
+            System.out.println("有admin权限");
+        }
 
         map.put("code", "200");
         map.put("msg", "登录成功");
@@ -50,6 +50,7 @@ public class MyController {
 
     @RequiresRoles(value = {"admin"})
     @GetMapping("/testRole")
+    @ResponseBody
     public String testRole() {
         return "admin";
     }

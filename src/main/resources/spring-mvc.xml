@@ -58,13 +58,13 @@
     <!--配置通过注解控制可访问的URL-->
     <bean class="org.apache.shiro.spring.LifecycleBeanPostProcessor" id="lifecycleBeanPostProcessor"></bean>
 
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"
+          id="attributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
     <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
           id="advisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
         <property name="proxyTargetClass" value="true"/>
     </bean>-->
 
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"
-          id="attributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
 </beans>
